@@ -6,6 +6,14 @@ const PostSchema = new Schema({
     content: String,
     author: String,
     creatorID : String,
+    comment : [{
+        comment: String,
+        creatorID : String,
+        createdAt: {
+            type: Date,
+            default: new Date(),
+        }
+    }],
     createdAt: {
         type: Date,
         default: new Date(),

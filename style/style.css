@@ -45,3 +45,22 @@ body{
 .post-header{
     display: flex;
 }
+
+.commenter-profile-image{
+    width: 40px;
+    position: relative;
+    top: 30px;
+}
+
+.comment-row{
+    display: flex;
+}
+
+.comment-col-1{
+    margin-right: 15px;
+}
+
+.comment-time{
+    position: relative;
+    top: 5px;
+}

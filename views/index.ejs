@@ -80,7 +80,7 @@
 
                     <!-- CKE EDITOR Plugins -->
                     <script>
-                        CKEDITOR.replace('post_content');
+                        CKEDITOR.replace('content');
                     </script>
 
                     <div class="text-right mt-3">
@@ -99,7 +99,7 @@
                 </div>
 
                 <div class="list-container">
-                    <div class="confession-post">
+                    <!-- <div class="confession-post">
                         <div class="post-header">
                             <div class="post-header-col">
                                 <img src="images/profile.png" alt="" class="profile-image"/>
@@ -132,8 +132,54 @@
                         <div class="comment-section mt-2">
                             <i class="far fa-comment-alt"></i>
                             <span class="comment-count ml-2">40</span>
+
+                            <div class="comment-container">
+                                <div class="comment-row">
+                                    <div class="comment-col-1">
+                                        <div class="comment-header">
+                                            <div class="post-header-col">
+                                                <img src="images/unknown.png" alt="" class="commenter-profile-image"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="comment-col-2">
+                                        <div class="post-content mt-3">
+                                            <div class="post-header-col">
+                                                <span class="author-name ml-3 font-weight-bold">Admin</span>
+                
+                                                <div class="post-time-container">
+                                                    <span class="post-time ml-3">20:37 - 23 August 2020</span>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3 mt-3">
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                            Cupiditate sint alias consectetur aliquam minus saepe, asperiores 
+                                            provident veniam, tenetur et laudantium? Veritatis cumque quod delectus 
+                                            odio nihil, magnam, exercitationem harum ut saepe beatae libero repellat 
+                                            id consectetur fugit deleniti. 
+                                            Ab rem corporis qui quae sed harum accusantium vel ducimus dolore.
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                            Cupiditate sint alias consectetur aliquam minus saepe, asperiores 
+                                            provident veniam, tenetur et laudantium? Veritatis cumque quod delectus 
+                                            odio nihil, magnam, exercitationem harum ut saepe beatae libero repellat 
+                                            id consectetur fugit deleniti. 
+                                            Ab rem corporis qui quae sed harum accusantium vel ducimus dolore.
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="comment-input mt-3">
+                                <form method="POST" action="/comment">
+                                    <input type="text" class="form-control rounded-pill" placeholder="write a comment..." name="comment_input">
+                                </form>
+                                
+                            </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     
                         <% if (post.length > 0) { %>
@@ -145,21 +191,74 @@
                                         </div>
                                         
                                         <div class="post-header-col">
-                                            <span class="author-name ml-3 font-weight-bold"><%= post.author %></span>
+                                            <span class="author-name ml-3 font-weight-bold">
+                                                <%= post.author %>
+                                            
+                                            </span>
             
                                             <div class="post-time-container">
-                                                <span class="post-time ml-3"><%= post.createdAt %></span>
+                                                <span class="post-time ml-3">
+                                                    <script>
+                                                        var post_time = '<%=post.createdAt%>';
+                                                        document.write(post_time.substring(4,25));
+                                                    </script>
+                                                    
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="post-content mt-3">
-                                        <%= post.content %>
+                                        <%- post.content %>
                                     </div>
             
                                     <div class="comment-section mt-2">
                                         <i class="far fa-comment-alt"></i>
-                                        <span class="comment-count ml-2">40</span>
+                                        <span class="comment-count ml-2"><%= post.comment.length %></span>
+            
+                                        <div class="comment-container">
+                                            <% post.comment.forEach(comments => { %>
+                                            <div class="comment-row">
+                                                <div class="comment-col-1">
+                                                    <div class="comment-header">
+                                                        <div class="post-header-col">
+                                                            <img src="images/unknown.png" alt="" class="commenter-profile-image"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+            
+                                                <div class="comment-col-2">
+                                                    
+                                                    <div class="post-content mt-3">
+                                                        <div class="post-header-col">
+                                                            <span class="author-name ml-3 font-weight-bold">Anonymous</span>
+                            
+                                                            <div class="comment-time-container">
+                                                                <span class="comment-time ml-3">
+                                                                    <script>
+                                                                        var post_time = '<%=comments.createdAt%>';
+                                                                        document.write(post_time.substring(4,25));
+                                                                    </script>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="ml-3 mt-3">
+                                                            <%= comments.comment %>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                        </div>
+            
+                                        <div class="comment-input mt-3">
+                                            <form method="POST" action="/comment/<%= post.id %>">
+                                                <input type="text" class="form-control rounded-pill" placeholder="write a comment..." name="comment_input">
+                                            </form>
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             <% }) %>
