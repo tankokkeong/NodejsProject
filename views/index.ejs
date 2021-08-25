@@ -134,6 +134,39 @@
                             <span class="comment-count ml-2">40</span>
                         </div>
                     </div>
+
+                    
+                        <% if (post.length > 0) { %>
+                            <% post.forEach(post => { %>
+                                <div class="confession-post">
+                                    <div class="post-header">
+                                        <div class="post-header-col">
+                                            <img src="images/profile.png" alt="" class="profile-image"/>
+                                        </div>
+                                        
+                                        <div class="post-header-col">
+                                            <span class="author-name ml-3 font-weight-bold"><%= post.author %></span>
+            
+                                            <div class="post-time-container">
+                                                <span class="post-time ml-3"><%= post.createdAt %></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="post-content mt-3">
+                                        <%= post.content %>
+                                    </div>
+            
+                                    <div class="comment-section mt-2">
+                                        <i class="far fa-comment-alt"></i>
+                                        <span class="comment-count ml-2">40</span>
+                                    </div>
+                                </div>
+                            <% }) %>
+                          <% } else { %>
+                            <p>There are no blogs to display...</p>
+                          <% } %>
+                    
                 </div>
             </div>
 
