@@ -17,10 +17,6 @@ body{
     padding-top: 10px;
 }
 
-#create-post-form{
-    display: none;
-}
-
 .profile-image{
     width: 64px;
 }
@@ -63,4 +59,22 @@ body{
 .comment-time{
     position: relative;
     top: 5px;
+}
+
+.search-input-form{
+    position: relative;
+}
+
+.search-icon{
+    position:absolute;
+    right: 10px;
+    top : 10px;
+}
+
+.view-more-comment{
+    cursor: pointer;
+}
+
+.view-more-comment:hover{
+    text-decoration: underline;
 }
