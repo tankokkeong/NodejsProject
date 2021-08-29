@@ -59,20 +59,23 @@
                     <h1>Create Post</h1>
                 </div>
 
-                <form method="POST" action="/" id="create-post-form">
+                <form method="POST" action="/" id="create-post-form" onsubmit="return postValidation()">
                     <div class="form-group">
                         <label>Author:</label>
-                        <input class="form-control" type="text" placeholder="Your Name" name="author">
+                        <input class="form-control" type="text" placeholder="Your Name" name="author" id="authorName">
+                        <div class="text-danger mt-1 ml-1 error-prompt"></div>
                     </div>
 
                     <div class="form-group">
                         <label>Title:</label>
-                        <input class="form-control" type="text" placeholder="Post Title" name="title">
+                        <input class="form-control" type="text" placeholder="Post Title" name="title" id="title">
+                        <div class="text-danger mt-1 ml-1 error-prompt"></div>
                     </div>
 
                     <div class="form-group">
                         <label>Content:</label>
-                        <textarea class="form-control" cols="30" rows="10" name="content"></textarea>
+                        <textarea class="form-control" cols="30" rows="10" name="content" id="content"></textarea>
+                        <div class="text-danger mt-1 ml-1 error-prompt"></div>
                     </div>
                     
 
@@ -210,7 +213,7 @@
                                     </div>
 
                                     <div class="post-title font-weight-bold mt-3">
-                                        #<%- post.title %>
+                                        #<%= post.title %>
                                     </div>
 
                                     <div class="post-content mt-3">
@@ -302,8 +305,8 @@
                                         </div>
             
                                         <div class="comment-input mt-3">
-                                            <form method="POST" action="/comment/<%= post.id %>">
-                                                <input type="text" class="form-control rounded-pill" placeholder="write a comment..." name="comment_input">
+                                            <form method="POST" action="/comment/<%= post.id %>" onsubmit="return commentValidation('comment_<%= post.id %>')">
+                                                <input type="text" class="form-control rounded-pill" placeholder="write a comment..." name="comment_input" id="comment_<%= post.id %>">
                                             </form>
                                             
                                         </div>
