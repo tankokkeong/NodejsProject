@@ -81,7 +81,9 @@
 
                     <!-- CKE EDITOR Plugins -->
                     <script>
-                        CKEDITOR.replace('content');
+                        CKEDITOR.replace('content', {
+                            removeButtons: 'Source',
+                        });
                     </script>
 
                     <div class="text-right mt-3">
