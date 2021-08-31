@@ -78,3 +78,7 @@ body{
 .view-more-comment:hover{
     text-decoration: underline;
 }
+
+.total-post{
+    font-size: 20px;
+}

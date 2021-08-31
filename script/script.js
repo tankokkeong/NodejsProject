@@ -81,3 +81,12 @@ function commentValidation(comment_id){
     return true;
   }
 }
+
+function getClientIp(input_id){
+  
+  var input = document.getElementById(input_id);
+
+  $.getJSON('https://json.geoiplookup.io/?callback=?', function(data) {
+    input.value = data.ip;
+  });
+}
