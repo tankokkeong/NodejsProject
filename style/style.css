@@ -40,6 +40,7 @@ body{
 
 .post-header{
     display: flex;
+    position: relative;
 }
 
 .commenter-profile-image{
@@ -81,4 +82,10 @@ body{
 
 .total-post{
     font-size: 20px;
+}
+
+.edit-area{
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
 }

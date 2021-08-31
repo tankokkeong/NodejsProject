@@ -102,6 +102,8 @@
                 </form>
             </div>
 
+            <div class="alert-container mt-3" id="alert-container"></div>
+
             <div class="post-container">
                 <div class="text-center">
                     <h2 class="font-weight-bold">Confession</h2>
@@ -131,9 +133,25 @@
                                     <span class="post-time ml-3">20:37 - 23 August 2020</span>
                                 </div>
                             </div>
+
+                            <div class="post-header-col" id="edit-trigger-abc3341">
+                                <div class="text-right edit-area">
+                                    <div class="dropdown">
+                                        <i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" onclick="editPost('abc3341')">Edit</a>
+                                            <a class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        checkEdit("115.135.98.126", "edit-trigger-abc3341");
+                                    </script>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="post-content mt-3">
+                        <div class="post-content mt-3" id="content-container-abc3341">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
                             Cupiditate sint alias consectetur aliquam minus saepe, asperiores 
                             provident veniam, tenetur et laudantium? Veritatis cumque quod delectus 
@@ -146,6 +164,23 @@
                             odio nihil, magnam, exercitationem harum ut saepe beatae libero repellat 
                             id consectetur fugit deleniti. 
                             Ab rem corporis qui quae sed harum accusantium vel ducimus dolore.
+                        </div>
+
+                        <input type="hidden" id="prev-value-abc3341" value="Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Cupiditate sint alias consectetur aliquam minus saepe, asperiores 
+                        provident veniam, tenetur et laudantium? Veritatis cumque quod delectus 
+                        odio nihil, magnam, exercitationem harum ut saepe beatae libero repellat 
+                        id consectetur fugit deleniti. 
+                        Ab rem corporis qui quae sed harum accusantium vel ducimus dolore.
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Cupiditate sint alias consectetur aliquam minus saepe, asperiores 
+                        provident veniam, tenetur et laudantium? Veritatis cumque quod delectus 
+                        odio nihil, magnam, exercitationem harum ut saepe beatae libero repellat 
+                        id consectetur fugit deleniti. 
+                        Ab rem corporis qui quae sed harum accusantium vel ducimus dolore.">
+
+                        <div id="edit-area-display-abc3341">
+
                         </div>
 
                         <div class="comment-section mt-2">
@@ -171,6 +206,7 @@
                                                     <span class="post-time ml-3">20:37 - 23 August 2020</span>
                                                 </div>
                                             </div>
+                                            
                                             <div class="ml-3 mt-3">
                                                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                             Cupiditate sint alias consectetur aliquam minus saepe, asperiores 
@@ -225,15 +261,35 @@
                                                 </span>
                                             </div>
                                         </div>
+
+                                        <div class="post-header-col" id="edit-trigger-<%= post.id %>">
+                                            <div class="text-right edit-area">
+                                                <div class="dropdown">
+                                                    <i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" onclick="editPost('<%= post.id %>')">Edit</a>
+                                                        <a class="dropdown-item" onclick="deletePost('<%= post.id %>')" data-toggle="modal" data-target="#deleteModal">Delete</a>
+                                                    </div>
+                                                </div>
+            
+                                                <script>
+                                                    checkEdit("<%= post.creatorID %>", "edit-trigger-<%= post.id %>");
+                                                </script>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="post-title font-weight-bold mt-3">
                                         #<%= post.title %>
                                     </div>
 
-                                    <div class="post-content mt-3">
+                                    <div class="post-content mt-3" id="content-container-<%= post.id %>">
                                         <%- post.content %>
                                     </div>
+
+                                    <input type="hidden" id="prev-value-<%= post.id %>" value="<%=post.content %>" />
+
+                                    <div id="edit-area-display-<%= post.id %>"></div>
             
                                     <div class="comment-section mt-2">
                                         <i class="far fa-comment-alt"></i>
@@ -322,9 +378,9 @@
                                         <div class="comment-input mt-3">
                                             <form method="POST" action="/comment/<%= post.id %>" onsubmit="return commentValidation('comment_<%= post.id %>')">
                                                 <input type="text" class="form-control rounded-pill" placeholder="write a comment..." name="comment_input" id="comment_<%= post.id %>">
-                                                <input type="hidden" id="client_id" name="client_id">
+                                                <input type="hidden" id="client_id_<%= post.id %>" name="client_id">
                                                 <script>
-                                                    getClientIp('client_id');
+                                                    getClientIp('client_id_<%= post.id %>');
                                                 </script>
                                             </form>
                                             
@@ -345,3 +401,32 @@
     </div>
 </body>
 </html>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete this post? This action is <strong>irreversible</strong>.
+        </div>
+        <div class="modal-footer">
+            <form method="POST" action="/delete-post">
+                <input type="hidden" name="delete_id" value="" id="deletePostInput">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //Check Action
+    actionAlert();
+</script>

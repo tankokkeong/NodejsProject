@@ -82,11 +82,132 @@ function commentValidation(comment_id){
   }
 }
 
+var clientIp;
+var firstLoad = 0;
+
 function getClientIp(input_id){
   
   var input = document.getElementById(input_id);
 
   $.getJSON('https://json.geoiplookup.io/?callback=?', function(data) {
     input.value = data.ip;
+    clientIp = data.ip;
   });
+}
+
+function editPost(post_id){
+
+  var content_container = document.getElementById("content-container-" + post_id);
+  var previous_value = document.getElementById("prev-value-" + post_id);
+  var edit_area = document.getElementById("edit-area-display-" + post_id);
+
+  //Remove content container
+  content_container.style.display = "none";
+
+  edit_area.innerHTML = '<form method="POST" action="/edit-post/' + post_id + '" class="mt-3">' +
+                        '<textarea name="edit_content" id="edit-area-' + post_id+ '">' +
+                          previous_value.value + 
+                        '</textarea>' +
+                        '<div class="text-center mt-3">' +
+                        '<button class="btn btn-primary" type="submit">Edit</button>' +
+                        '<button class="btn btn-secondary ml-2" onclick="cancelEditPost(' + "'" +  post_id + "'" + ')">Cancel</button>' +
+                        '</div>' +
+                        '</form>';
+
+  CKEDITOR.replace('edit-area-' + post_id, {
+      removeButtons: 'Source',
+  });
+}
+
+function cancelEditPost(post_id){
+  var content_container = document.getElementById("content-container-" + post_id);
+  var edit_area = document.getElementById("edit-area-display-" + post_id);
+
+  //Display content container
+  content_container.style.display = "";
+
+  //Remove edit area
+  edit_area.innerHTML = "";
+}
+
+function checkEdit(id, trigger_id){
+
+  var trigger = document.getElementById(trigger_id);
+
+  if(firstLoad == 0){
+    $.getJSON('https://json.geoiplookup.io/?callback=?', function(data) {
+      //Get client ip
+      clientIp = data.ip;
+      firstLoad++;
+    }).then(() =>{
+      if(id != clientIp){
+    
+        //Remove trigger
+        trigger.remove();
+      }
+    });
+  }
+  else if(id != clientIp){
+    
+    //Remove trigger
+    trigger.remove();
+  }
+}
+
+function deletePost(post_id){
+  var delete_id = document.getElementById("deletePostInput");
+
+  //get delete id
+  delete_id.value = post_id;
+}
+
+function actionAlert(){
+  var action = window.location.href.split("?")[1];
+  var alertContainer = document.getElementById("alert-container");
+
+  if(action == "deleted"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+        'Post Deleted Successful!' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
+  else if (action == "updated"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+        'Post updated Successful!' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
+  else if(action == "created"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+        'Post Created Successful!' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
+  else if(action == "commented"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+        'Comment Created Successful!' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
+  else if(action == "error"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+        'Something is wrong, please try again later...' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
 }
