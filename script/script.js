@@ -82,18 +82,61 @@ function commentValidation(comment_id){
   }
 }
 
+//Global variable
 var clientIp;
-var firstLoad = 0;
+
+function generateClientIp(){
+  if(!checkClintIp()){
+    clientIp = uuidv4();
+    setCookie("node-anonymous-ip", clientIp, 365);
+  }
+  else{
+    clientIp = getCookie("node-anonymous-ip");
+  }
+}
 
 function getClientIp(input_id){
-  
-  var input = document.getElementById(input_id);
 
-  $.getJSON('https://json.geoiplookup.io/?callback=?', function(data) {
-    input.value = data.ip;
-    clientIp = data.ip;
-  });
+  var input = document.getElementById(input_id);
+  input.value = clientIp;
 }
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function checkClintIp() {
+
+  var user = getCookie("node-anonymous-ip");
+
+  if (user != "") {
+    return true;
+  } 
+  else 
+  {
+    return false
+  }
+}
+
 
 function editPost(post_id){
 
@@ -134,21 +177,8 @@ function checkEdit(id, trigger_id){
 
   var trigger = document.getElementById(trigger_id);
 
-  if(firstLoad == 0){
-    $.getJSON('https://json.geoiplookup.io/?callback=?', function(data) {
-      //Get client ip
-      clientIp = data.ip;
-      firstLoad++;
-    }).then(() =>{
-      if(id != clientIp){
-    
-        //Remove trigger
-        trigger.remove();
-      }
-    });
-  }
-  else if(id != clientIp){
-    
+  console.log(clientIp)
+  if(id != clientIp){
     //Remove trigger
     trigger.remove();
   }
@@ -210,4 +240,38 @@ function actionAlert(){
         '</button>' +
     '</div>';
   }
+  else if(action == "empty"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+        'Don\'t try to submit an empty form, you fuck!' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
+  else if(action == "empty-comment"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+        'Don\'t try to submit an empty comment, you fuck!' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
+  else if(action == "invalid-delete"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+        'Don\'t try to delete the post that is not owned by you, you fuck!' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
+}
+
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }

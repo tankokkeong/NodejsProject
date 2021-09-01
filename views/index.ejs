@@ -26,7 +26,10 @@
 
     <!-- Cloudflare API -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-
+    <script>
+        //Generate client unique ip
+        generateClientIp();
+    </script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -418,6 +421,10 @@
         <div class="modal-footer">
             <form method="POST" action="/delete-post">
                 <input type="hidden" name="delete_id" value="" id="deletePostInput">
+                <input type="hidden" id="delete_client" name="delete_client">
+                <script>
+                    getClientIp('delete_client');
+                </script>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
