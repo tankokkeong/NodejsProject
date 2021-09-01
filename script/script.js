@@ -8,7 +8,7 @@ function viewMoreComment(container_id){
     
     if(comment_display_count < 5){
       if(comment_container.childNodes[i].className == "comment-row"){
-        console.log("hi")
+
         if(comment_container.childNodes[i].style.display == "none"){
           //Display comment
           comment_container.childNodes[i].style.display = "";
@@ -178,7 +178,6 @@ function checkEdit(id, trigger_id){
 
   var trigger = document.getElementById(trigger_id);
 
-  console.log(clientIp)
   if(id != clientIp){
     //Remove trigger
     trigger.remove();
