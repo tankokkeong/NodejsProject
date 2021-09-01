@@ -151,6 +151,7 @@ function editPost(post_id){
                         '<textarea name="edit_content" id="edit-area-' + post_id+ '">' +
                           previous_value.value + 
                         '</textarea>' +
+                        '<input type="hidden" name="edit_client" value="' + clientIp + '"/>' +
                         '<div class="text-center mt-3">' +
                         '<button class="btn btn-primary" type="submit">Edit</button>' +
                         '<button class="btn btn-secondary ml-2" onclick="cancelEditPost(' + "'" +  post_id + "'" + ')">Cancel</button>' +
@@ -262,6 +263,15 @@ function actionAlert(){
     alertContainer.innerHTML = 
     '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
         'Don\'t try to delete the post that is not owned by you, you fuck!' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
+  }
+  else if(action == "invalid-update"){
+    alertContainer.innerHTML = 
+    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+        'Don\'t try to edit the post that is not owned by you, you fuck!' +
         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
             '<span aria-hidden="true">&times;</span>' +
         '</button>' +
